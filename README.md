@@ -25,7 +25,7 @@ This is the backend server for the QuickHire platform, a job board and applicant
    ```env
    NODE_ENV=development
    PORT=5000
-   MONGO_URI="your_mongodb_connection_string"
+   MONGO_URI="mongodb+srv://db_user:JoyPortfolio5441%40%40%23%23%24@cluster0.zmln02u.mongodb.net/qtech-test"
    JWT_SECRET="ef7a8a4a5762fc85e79632b62effd5d880f57b6bd8996495fab9cd0798d0d1df"
    FRONTEND_URL="http://localhost:3000"
    ```
