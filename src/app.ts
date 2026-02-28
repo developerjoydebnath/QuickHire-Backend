@@ -2,6 +2,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import connectDB from './config/db';
 import applicationRoutes from './routes/application.routes';
 import authRoutes from './routes/auth.routes';
 import companyRoutes from './routes/company.routes';
@@ -14,6 +15,12 @@ import statsRoutes from './routes/stats.routes';
 dotenv.config();
 
 const app = express();
+
+// Connect DB on every request (serverless safe)
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
 // Middleware
 app.use(express.json());
