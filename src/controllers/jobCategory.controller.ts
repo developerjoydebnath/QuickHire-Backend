@@ -15,10 +15,26 @@ export const getJobCategories = async (req: Request, res: Response) => {
     }
 
     const total = await JobCategory.countDocuments(query);
-    const categories = await JobCategory.find(query)
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit);
+    const categories = await JobCategory.aggregate([
+      { $match: query },
+      {
+        $lookup: {
+          from: 'jobs', // Assuming the collection name is 'jobs'
+          localField: '_id',
+          foreignField: 'categories',
+          as: 'jobs',
+        },
+      },
+      {
+        $addFields: {
+          count: { $size: '$jobs' },
+        },
+      },
+      { $project: { jobs: 0 } },
+      { $sort: { createdAt: -1 } },
+      { $skip: (page - 1) * limit },
+      { $limit: limit },
+    ]);
 
     res.json({
       data: categories,
