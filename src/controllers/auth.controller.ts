@@ -71,6 +71,7 @@ export const logoutUser = (req: Request, res: Response) => {
     expires: new Date(0),
     secure: process.env.NODE_ENV !== 'development',
     sameSite: process.env.NODE_ENV !== 'development' ? 'none' : 'strict',
+    domain: '.vercel.app',
   });
   res.status(200).json({ message: 'Logged out successfully' });
 };
