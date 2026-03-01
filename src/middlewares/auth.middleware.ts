@@ -17,9 +17,17 @@ interface JwtPayload {
 export const protect = async (req: Request, res: Response, next: NextFunction) => {
   let token;
 
-  token = req.cookies.jwt;
+  // 1. Check Authorization header first (cross-domain / Vercel)
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
 
-  console.log({token})
+  // 2. Fallback to cookie (same-domain / local dev)
+  if (!token) {
+    token = req.cookies.jwt;
+  }
+
+  console.log({ token })
 
   if (token) {
     try {
